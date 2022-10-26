@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" >
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Signin Template for Bootstrap</title>
+        <!--This isno rules :<style>
+			.blue{
+                  color: blue;
+			}
+		</style>-->
+
+        <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+        <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+        <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+		<!-- Bootstrap core CSS -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Custom styles for this template -->
+		<link href="/css/signin.css" rel="stylesheet">
+	</head>
+
+	<body class="text-center" background="/img/earth.jfif">
+		<form class="form-signin" action="dashboard.html">
+			<img class="mb-4" src="/img/R.jfif" alt="" width="72" height="72">
+			<div id="example"></div>
+            <script type="text/babel">
+            ReactDOM.render(
+           // <h1>Hello, world!</h1>
+		   <h1>Please sign in</h1>,
+               document.getElementById('example')
+      
+             );
+
+           </script>
+
+			<p style="color: red" text="$(msg)" if="${not #strings.isEmpty(msg)}}"></p>
+
+
+			<label class="sr-only">Useraccount</label>
+			<input type="text" class="form-control" placeholder="#{login.Useraccount}" required="" autofocus="">
+			<label class="sr-only">Password</label>
+			<input type="password" class="form-control" placeholder="#{login.Password}" required="">
+			<div class="checkbox mb-3">              
+				
+				<label>
+					<input type="checkbox" value="remember-me">Remember-me</input> 
+                 </label>
+			</div> 
+			<button class="btn btn-lg btn-primary btn-block"  type="submit">Sign in</button>
+			
+			
+			<label>
+				<a class="blue" href= "toPage?url=/index_signup.html">SignUp with Free</a>
+			    </label> 
+			
+			<p class="blue" >© 2020-2030</p>
+			
+		</form>
+
+	</body>
+
+</html>
