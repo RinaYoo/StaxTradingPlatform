@@ -1,0 +1,84 @@
+/* -------------------------------- */
+/* General Styles */
+/* -------------------------------- */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  color: #333;
+  font: 1.6rem 'Lato', sans-serif;
+}
+
+/* -------------------------------- */
+/* Navigation Styles */
+/* -------------------------------- */
+nav {
+  padding: 3rem 5rem;
+  background-color: #6900ff;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav a {
+  text-decoration: none;
+  color: #ddd;
+  font-size: 1.8rem;
+}
+
+.nav-item a:not(:last-child) {
+    margin-right: 4rem;
+}
+
+/* -------------------------------- */
+/* Component Styles */
+/* -------------------------------- */
+section {
+  margin: 3rem 10rem;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* -------------------------------- */
+/* Login Styles */
+/* -------------------------------- */
+.login-section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo-img {
+  width: 50vw;
+}
+
+/* -------------------------------- */
+/* Home Styles */
+/* -------------------------------- */
+.home-title {
+  display: flex;
+  font-size: 2.7rem;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.icon {
+  font-size: 4rem;
+  color: #6900ff;
+}
+
+.purple {
+  color: #6900ff;
+}
