@@ -1,2 +1,0 @@
-# Stax Trading Platform
- 
