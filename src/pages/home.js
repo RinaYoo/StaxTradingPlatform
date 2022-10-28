@@ -23,16 +23,13 @@ function Home() {
   }, []);
   return (
     <div>
-      <section>
+      <section className="home">
         <div className="home-title">
           <FaCoins className="icon" />
           <h1>
             Coin<span className="purple">Search</span>
           </h1>
         </div>
-        <Switch>
-        <Route exact path="/" component={<Coins coins={coins} />} />
-        </Switch>
         <a href="/"><Coins coins={coins} /></a>
       </section>
     </div>
