@@ -29,6 +29,7 @@ function Home() {
       .then(() => {
         //Sign-Out Successful
         console.log("successful");
+        alert("You are logged out!");
       })
       .catch((error) => {
         console.log("failed");
@@ -54,9 +55,7 @@ function Home() {
             Coin<span className="purple">Search</span>
           </h1>
         </div>
-        <a href="/">
-          <Coins coins={coins} />
-        </a>
+        <Coins coins={coins} />
       </section>
     </div>
   );

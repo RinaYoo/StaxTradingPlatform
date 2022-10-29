@@ -9,6 +9,7 @@ function LearnAndEarn() {
       .then(() => {
         //Sign-Out Successful
         console.log("successful");
+        alert("You are logged out!");
       })
       .catch((error) => {
         console.log("failed");

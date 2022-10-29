@@ -20,16 +20,17 @@ function Login() {
       .then((userCredential) => {
         //Signed In
         const user = userCredential.user;
-        dispatch({type:"LOGIN", payload:user})
-        console.log(user)
+        dispatch({ type: "LOGIN", payload: user });
+        console.log(user);
         navigate.push("/home");
+        alert("You have succesfully logged in!");
       })
       .catch((error) => {
-        setError(true)
+        setError(true);
       });
   };
 
-  const {dispatch} = useContext(AuthContext)
+  const { dispatch } = useContext(AuthContext);
 
   return (
     <div className="login">
@@ -52,8 +53,7 @@ function Login() {
           <button type="submit">Login</button>
           {error && <span>Wrong email or password!</span>}
           <p>
-            Don't have an account? Click <a href="signup">here</a> to
-            register
+            Don't have an account? Click <a href="signup">here</a> to register
           </p>
         </form>
       </section>

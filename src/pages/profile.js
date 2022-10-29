@@ -10,11 +10,13 @@ function Profile() {
       .then(() => {
         //Sign-Out Successful
         console.log("successful");
+        alert("You are logged out!");
       })
       .catch((error) => {
         console.log("failed");
       });
   };
+
   return (
     <div>
       <nav>
@@ -27,6 +29,11 @@ function Profile() {
           </a>
         </div>
       </nav>
+
+      <section>
+        <h1>My Profile</h1>
+
+      </section>
     </div>
   );
 }
