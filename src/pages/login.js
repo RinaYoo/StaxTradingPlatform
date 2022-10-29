@@ -34,7 +34,7 @@ function Login() {
 
   return (
     <div className="login">
-      <h1>Welcome to Our Trading Platform!</h1>
+      <h1>Welcome to Our Crypto Platform!</h1>
       <p>Please Login to Use Our Platform</p>
       <section className="login-container">
         <img className="logo-img" src={logo} alt="Stax" />

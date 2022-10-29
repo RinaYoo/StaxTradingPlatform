@@ -41,7 +41,7 @@ function SignUp() {
       });
     } else {
       alert("Your age should be 18 or above!");
-    }
+    } 
   };
 
   const { dispatch } = useContext(AuthContext);

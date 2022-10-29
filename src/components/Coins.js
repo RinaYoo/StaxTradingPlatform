@@ -13,7 +13,7 @@ const Coins = (props) => {
           <p>Rank #</p>
           <p className="coin-name">Coin</p>
           <p>Price</p>
-          <p>24h</p>
+          <p>24h Change</p>
           <p>Volume</p>
           <p>Mkt Cap</p>
         </div>
