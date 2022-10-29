@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
 
 
@@ -11,8 +11,17 @@ import signup from "./pages/signup";
 import learnAndEarn from "./pages/learnAndEarn";
 import profile from "./pages/profile";
 import Navbar from "./pages/Navbar";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
+
+  const currentUser = useContext(AuthContext)
+
+  const RequireAuth = ({children}) => {
+    return currentUser ? (children) : <Redirect to ="/" />
+  }
+
+  console.log(currentUser)
 
   return (
     <div className="App">

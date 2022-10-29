@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../images/stax-img.jpg";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login() {
   const [error, setError] = useState(false);
@@ -19,6 +20,7 @@ function Login() {
       .then((userCredential) => {
         //Signed In
         const user = userCredential.user;
+        dispatch({type:"LOGIN", payload:user})
         console.log(user)
         navigate.push("/home");
       })
@@ -26,6 +28,8 @@ function Login() {
         setError(true)
       });
   };
+
+  const {dispatch} = useContext(AuthContext)
 
   return (
     <div>
@@ -46,7 +50,7 @@ function Login() {
           <button type="submit">Login</button>
           {error && <span>Wrong email or password!</span>}
           <p>
-            Don't have an account? Click <a href="signup.js">here</a> to
+            Don't have an account? Click <a href="signup">here</a> to
             register
           </p>
         </form>
