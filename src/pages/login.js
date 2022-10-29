@@ -1,22 +1,26 @@
 import React from "react";
 import logo from "../images/stax-img.jpg";
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
-    // e.preventDefault();
+  let navigate = useHistory();
 
-    createUserWithEmailAndPassword(auth, email, password)
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         //Signed In
         const user = userCredential.user;
         console.log(user)
+        navigate.push("/home");
       })
       .catch((error) => {
         setError(true)
