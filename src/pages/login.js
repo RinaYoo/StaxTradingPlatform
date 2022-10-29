@@ -32,19 +32,21 @@ function Login() {
   const {dispatch} = useContext(AuthContext)
 
   return (
-    <div>
+    <div className="login">
+      <h1>Welcome to Our Trading Platform!</h1>
+      <p>Please Login to Use Our Platform</p>
       <section className="login-container">
         <img className="logo-img" src={logo} alt="Stax" />
         <form onSubmit={handleLogin} className="login-section">
-          <h1>LOGIN</h1>
+          <h2>LOGIN</h2>
           <input
             type="email"
-            placeholder="email"
+            placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">Login</button>

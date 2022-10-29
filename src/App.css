@@ -48,8 +48,18 @@ section {
 /* -------------------------------- */
 /* Login Styles */
 /* -------------------------------- */
+.login > h1 {
+  text-align: center;
+  margin: 10rem 0 1rem;
+  font-size: 5rem;
+}
+
+.login > p {
+  text-align: center;
+  font-size: 2.5rem;
+}
+
 .login-container {
-  padding: 6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +83,7 @@ section {
   position: relative;
 }
 
-.login-container form>h1 {
+.login-container form>h2 {
   font-size: 3.6rem;
   margin-top: 4rem;
 }
@@ -127,4 +137,15 @@ section {
 
 .purple {
   color: #6900ff;
+}
+
+/* -------------------------------- */
+/* SignUp Styles */
+/* -------------------------------- */
+.signup-height {
+  margin-top: 18rem;
+}
+
+.signup-height h1 {
+  padding-top: 2rem;
 }

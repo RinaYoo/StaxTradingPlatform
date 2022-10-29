@@ -1,13 +1,22 @@
-import { async } from "@firebase/util";
-import { signOut } from "firebase/auth";
-import React, { Component } from "react";
-import { auth } from "../firebase";
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
+  const auth = getAuth();
 
-  const logout = async () => {
-    await signOut(auth);
-  }
+  const handleLogout = (e) => {
+    signOut(auth)
+      .then(() => {
+        //Sign-Out Successful
+        console.log("successful");
+      })
+      .catch((error) => {
+        console.log("failed");
+      });
+  };
+
 
   return (
     <div>
@@ -16,7 +25,9 @@ function Navbar() {
         <div className="nav-item">
           <a href="/learnAndEarn">Learn&Earn</a>
           <a href="/Profile">Profile</a>
-          <button onClick={logout}>Logout</button>
+          <a href="/" onClick={handleLogout}>
+            Logout
+          </a>
         </div>
       </nav>
     </div>

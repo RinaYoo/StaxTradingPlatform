@@ -73,7 +73,7 @@ function SignUp() {
           />
           <button type="submit">Sign Up</button>
           <p>
-            Have an account? Click <a href="signup">here</a> to login
+            Have an account? Click <a href="/">here</a> to login
           </p>
         </form>
       </section>

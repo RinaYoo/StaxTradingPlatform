@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import Coins from "../components/Coins";
 import axios from "axios";
 import { FaCoins } from "react-icons/fa";
-import {Switch, Route} from 'react-router-dom';
+import { getAuth, signOut } from "firebase/auth";
 
 function Home() {
   const [coins, setCoins] = useState([]);
@@ -21,8 +21,32 @@ function Home() {
         console.log(error);
       });
   }, []);
+
+  const auth = getAuth();
+
+  const handleLogout = (e) => {
+    signOut(auth)
+      .then(() => {
+        //Sign-Out Successful
+        console.log("successful");
+      })
+      .catch((error) => {
+        console.log("failed");
+      });
+  };
+
   return (
     <div>
+      <nav>
+        <a href="/home"> Stax | Trading Platform </a>
+        <div className="nav-item">
+          <a href="/learnAndEarn">Learn&Earn</a>
+          <a href="/Profile">Profile</a>
+          <a href="/" onClick={handleLogout}>
+            Logout
+          </a>
+        </div>
+      </nav>
       <section className="home">
         <div className="home-title">
           <FaCoins className="icon" />
@@ -30,7 +54,9 @@ function Home() {
             Coin<span className="purple">Search</span>
           </h1>
         </div>
-        <a href="/"><Coins coins={coins} /></a>
+        <a href="/">
+          <Coins coins={coins} />
+        </a>
       </section>
     </div>
   );
