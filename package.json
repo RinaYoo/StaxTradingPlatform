@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/base": "^5.0.0-alpha.103",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
     "@testing-library/jest-dom": "^5.14.1",
@@ -18,7 +19,7 @@
     "react-icons": "^4.6.0",
     "react-native-elements": "0.19.1",
     "react-router-dom": "^5.3.4",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

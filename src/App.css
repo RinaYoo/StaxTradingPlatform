@@ -68,6 +68,7 @@ section {
 
 .login-container img {
   width: 60rem;
+  opacity: 0.8;
 }
 
 .login-container form {
