@@ -1,18 +1,68 @@
-import React,{useEffect, useState} from "react";
+import React,{useEffect, useLayoutEffect, useState,useContext} from "react";
 import EarnModal from "../../components/Dialog";
+import { doc, getDoc,updateDoc } from "firebase/firestore"; 
+import {db} from '../../firebase'
+import { AuthContext } from "../../context/AuthContext";
+import { getAuth } from "firebase/auth";
+
 
 function CourseOne(props){
-   
-    const [choice,setChoice] = useState(0);
+    const quizDocID =   "AjUwy3RjIzJgU3QTpjaC";
+    const [choice,setChoice] = useState(-1);
     const [open,setOpen] = useState(false);
-    
-    const correctAnswer = 1;
-    
+    const [solved,setSolved] = useState(false);
+
+    const [answer,setAnswer] = useState(-2);
+    const [choices,setChoices] = useState([]);
+    const [learnedCourses,setLearnedCourses] = useState([]);
+    const [quiz,setQuiz] = useState({});
+    const docRef = doc(db, "quiz",quizDocID);
+    const auth = getAuth();
+    const currentUser = useContext(AuthContext)
+    const [user,setUser] = useState({});
+    const userDocRef = doc(db,"users",currentUser.currentUser.uid);
+
     useEffect(()=>{
-        if(choice===correctAnswer){
+        
+        getDoc(docRef).then((snapshot)=>{
+            if (snapshot.exists()) {
+              let quizDoc = snapshot.data();
+              setAnswer(quizDoc.answer);
+              setChoices(quizDoc.choices);
+              setQuiz(quizDoc);
+              getDoc(userDocRef).then((resp)=>{
+                let doc = resp.data();
+                console.log(doc)
+                setLearnedCourses(doc.courses);
+                setUser(doc);
+                for(let course of doc.courses){
+                    if(course===quizDocID){
+                        alert("You have been learned this course");
+                        setSolved(true);
+                        setChoice(quizDoc.answer);
+                        break;
+                    }
+                }
+              })
+              
+            } else {
+              console.log("No such document!");
+            }
+          })
+        
+    },[]);
+    useLayoutEffect(()=>{
+        
+        if(choice===answer && !solved){
             setOpen(true);
+            learnedCourses.push(quizDocID);
+            updateDoc(userDocRef,{
+                courses:learnedCourses,
+                reward:quiz.reward + user.reward  
+            });
         }
-    },[choice])
+    },[choice]);
+
 
     return (
         <div id="course1" >
@@ -117,29 +167,49 @@ function CourseOne(props){
             interest on the currency you own if interest rates are rock bottom.
             </p>
         </div>
-        <div className="quiz-wrapper">
-            <div className="quiz-container-wrapper">
-            <div className="quiz-container">
-                <div className="pre-title">Test yourself</div>
-                <h4 className="h2 title-quiz">
-                Who are the biggest buyers and sellers of forex?
-                </h4>
-                <dl className="list-quiz singleQuiz">
-                <dd data-r={4} onClick = {()=>setChoice(4)} className = {choice === 4 ? correctAnswer === 4 ? 'right-selection':'wrong-selection':""}>Governments</dd>
-                <dd data-r={2} onClick = {()=>setChoice(2)} className = {choice === 2 ? correctAnswer === 2 ? 'right-selection':'wrong-selection':""}>Investment funds</dd>
-                <dd data-r={1} onClick = {()=>setChoice(1)} className = {choice === 1 ? correctAnswer === 1 ? 'right-selection':'wrong-selection':""}>Banks</dd>
-                <dd data-r={3} onClick = {()=>setChoice(3)} className = {choice === 3 ? correctAnswer === 3 ? 'right-selection':'wrong-selection':""}>Companies</dd>
-                </dl>
-                {
-                    choice ===0 || choice === correctAnswer?
-                    ''
-                    :
-                    <p id="wrong_tip">Not correct answer, please try again</p>
-                }
-            </div>
-            </div>
-        </div>
-        <EarnModal open = {open} setOpen = {setOpen}></EarnModal>
+        
+        <div className="quiz-container-wrapper">
+                    <div
+                    className="quiz-question-container"
+                    data-qa="question_answer_1"
+                    data-qtype="S"
+                    >
+                    <div className = {`quiz-question ${choice===-1 ?'': choice === answer ? 'correct-result':'wrong-result'}`}>
+                        <h2>Question</h2>
+                        <p>{quiz.title}</p>
+                    </div>
+                    <div className="quiz-answers">
+                        {
+                            choices.map((item,index)=>
+                            <label>
+                                <input
+                                    key = {index}
+                                    type="radio"
+                                    
+                                    className="quiz-radio"
+                                    onClick={()=>setChoice(index)}
+                                    checked = {choice === index}
+                                    disabled = {choice === answer || solved}
+                                />
+                                {" "+item}
+                            </label>)
+                        }
+                    </div>
+                    {
+                        choice!==-1 && choice !== answer ?
+                        <div className="quiz-descriptions">
+                            <div className="wrong">Oops! Try again.</div>
+                            <p>
+                                Not correct answer, please try again
+                            </p>
+                        </div>
+                        :
+                        ''
+                    }
+                    
+                    </div>
+                </div>
+        <EarnModal open = {open && !solved} setOpen = {setOpen}></EarnModal>
         </div>
         
 

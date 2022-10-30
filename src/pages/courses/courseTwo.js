@@ -1,15 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useContext,useLayoutEffect} from "react";
 import EarnModal from "../../components/Dialog";
-function CourseTwo(props){
-    const [choice,setChoice] = useState(-1);
-    const [open,setOpen] = useState(false);
-    const answer = 0;
+import { doc, getDoc,updateDoc } from "firebase/firestore"; 
+import {db} from '../../firebase'
+import { AuthContext } from "../../context/AuthContext";
+import { getAuth } from "firebase/auth";
 
-    useEffect(()=>{
-      if(choice===answer){
-        setOpen(true);
+function CourseTwo(props){
+  const quizDocID =   "Xc4cp7N185kintxiKSEI";
+  const [choice,setChoice] = useState(-1);
+  const [open,setOpen] = useState(false);
+  const [solved,setSolved] = useState(false);
+
+  const [answer,setAnswer] = useState(-2);
+  const [choices,setChoices] = useState([]);
+  const [learnedCourses,setLearnedCourses] = useState([]);
+  const [quiz,setQuiz] = useState({});
+  const docRef = doc(db, "quiz",quizDocID);
+  const auth = getAuth();
+  const currentUser = useContext(AuthContext)
+  const [user,setUser] = useState({});
+
+
+  const userDocRef = doc(db,"users",currentUser.currentUser.uid);
+
+  useEffect(()=>{
+      
+      getDoc(docRef).then((snapshot)=>{
+          if (snapshot.exists()) {
+            let quizDoc = snapshot.data();
+            setAnswer(quizDoc.answer);
+            setChoices(quizDoc.choices);
+            setQuiz(quizDoc);
+            getDoc(userDocRef).then((resp)=>{
+              let doc = resp.data();
+              console.log(doc)
+              setLearnedCourses(doc.courses);
+              setUser(doc);
+              for(let course of doc.courses){
+                  if(course===quizDocID){
+                      alert("You have been learned this course");
+                      setSolved(true);
+                      setChoice(quizDoc.answer);
+                      
+                      break;
+                  }
+              }
+            })
+            
+          } else {
+            console.log("No such document!");
+          }
+        })
+      
+  },[]);
+  useLayoutEffect(()=>{
+      
+      if(choice===answer && !solved){
+          setOpen(true);
+          learnedCourses.push(quizDocID);
+          updateDoc(userDocRef,{
+              courses:learnedCourses,
+              reward:quiz.reward + user.reward
+          });
       }
-    },[choice])
+  },[choice]);
     return (
 
         <div id="course2" >
@@ -302,33 +356,26 @@ function CourseTwo(props){
           <div className = {`quiz-question ${choice===-1 ?'': choice === answer ? 'correct-result':'wrong-result'}`}>
             <h2>Question</h2>
             <p>
-              Blockchain is a type of technology that stores data in the form of
-              blocks.
+              {quiz.title}
             </p>
           </div>
           <div className="quiz-answers">
-            <label>
-              <input
-                type="radio"
-                name="question_answer_0"
-                defaultValue={0}
-                className="quiz-radio"
-                onClick={()=>setChoice(0)}
-                disabled = {choice === answer}
-              />{" "}
-              True
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="question_answer_0"
-                defaultValue={1}
-                className="quiz-radio"
-                onClick={()=>setChoice(1)}
-                disabled = {choice === answer}
-              />{" "}
-              False
-            </label>
+            
+            {
+                            choices.map((item,index)=>
+                            <label>
+                                <input
+                                    key = {index}
+                                    type="radio"
+                                    
+                                    className="quiz-radio"
+                                    onClick={()=>setChoice(index)}
+                                    checked = {choice === index}
+                                    disabled = {choice === answer || solved}
+                                />
+                                {" "+item}
+                            </label>)
+                        }
           </div>
           {
             choice!==-1 && choice !== answer?
@@ -350,7 +397,7 @@ function CourseTwo(props){
       </div>
     </div>
   </div>
-  <EarnModal open = {open} setOpen = {setOpen}></EarnModal>
+  <EarnModal open = {open && !solved} setOpen = {setOpen}></EarnModal>
 
 </div>
 

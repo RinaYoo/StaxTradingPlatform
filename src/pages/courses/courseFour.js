@@ -1,14 +1,68 @@
-import React ,{useState,useEffect} from "react";
+import React, { useEffect, useState ,useContext,useLayoutEffect} from "react";
 import EarnModal from "../../components/Dialog";
+import { doc, getDoc,updateDoc } from "firebase/firestore"; 
+import {db} from '../../firebase'
+import { AuthContext } from "../../context/AuthContext";
+import { getAuth } from "firebase/auth";
 function CourseFour(props){
-    const [choice,setChoice] = useState(-1);
-    const answer = 4;
-    const [open,setOpen] = useState(false);
-    useEffect(()=>{
-        if(choice===answer){
+  const quizDocID =   "qUiv16JGmPOv8K2oDgxl";
+  const [choice,setChoice] = useState(-1);
+  const [open,setOpen] = useState(false);
+  const [solved,setSolved] = useState(false);
+
+  const [answer,setAnswer] = useState(-2);
+  const [choices,setChoices] = useState([]);
+  const [learnedCourses,setLearnedCourses] = useState([]);
+  const [quiz,setQuiz] = useState({});
+  const docRef = doc(db, "quiz",quizDocID);
+  const auth = getAuth();
+  const currentUser = useContext(AuthContext)
+  const [user,setUser] = useState({});
+
+
+  const userDocRef = doc(db,"users",currentUser.currentUser.uid);
+
+  useEffect(()=>{
+      
+      getDoc(docRef).then((snapshot)=>{
+          if (snapshot.exists()) {
+            let quizDoc = snapshot.data();
+            setAnswer(quizDoc.answer);
+            setChoices(quizDoc.choices);
+            setQuiz(quizDoc);
+            getDoc(userDocRef).then((resp)=>{
+              let doc = resp.data();
+              console.log(doc)
+              setLearnedCourses(doc.courses);
+              setUser(doc);
+              for(let course of doc.courses){
+                  if(course===quizDocID){
+                      alert("You have been learned this course");
+                      setSolved(true);
+                      setChoice(quizDoc.answer);
+                      
+                      break;
+                  }
+              }
+            })
+            
+          } else {
+            console.log("No such document!");
+          }
+        })
+      
+  },[]);
+  useLayoutEffect(()=>{
+      
+      if(choice===answer && !solved){
           setOpen(true);
-        }
-    },[choice])
+          learnedCourses.push(quizDocID);
+          updateDoc(userDocRef,{
+              courses:learnedCourses,
+              reward:quiz.reward + user.reward
+          });
+      }
+  },[choice]);
     return (
         <div id="course4" >
             <div className="course">
@@ -293,64 +347,25 @@ function CourseFour(props){
                     >
                     <div className = {`quiz-question ${choice===-1 ?'': choice === answer ? 'correct-result':'wrong-result'}`}>
                         <h2>Question</h2>
-                        <p>What makes blockchain technology secure?</p>
+                        <p>{quiz.title}</p>
                     </div>
                     <div className="quiz-answers">
-                        <label>
-                        <input
-                            type="radio"
-                            name="question_answer_4"
-                            defaultValue={0}
-                            className="quiz-radio"
-                            onClick={()=>setChoice(0)}
-                            disabled = {choice === answer}
-                        />
-                        Consensus algorithms
-                        </label>
-                        <label>
-                        <input
-                            type="radio"
-                            name="question_answer_4"
-                            defaultValue={1}
-                            className="quiz-radio"
-                            onClick={()=>setChoice(1)}
-                            disabled = {choice === answer}
-                        />
-                        Decentralization
-                        </label>
-                        <label>
-                        <input
-                            type="radio"
-                            name="question_answer_4"
-                            defaultValue={2}
-                            className="quiz-radio"
-                            onClick={()=>setChoice(2)}
-                            disabled = {choice === answer}
-                        />{" "}
-                        Immutability
-                        </label>
-                        <label>
-                        <input
-                            type="radio"
-                            name="question_answer_4"
-                            defaultValue={3}
-                            className="quiz-radio"
-                            onClick={()=>setChoice(3)}
-                            disabled = {choice === answer}
-                        />{" "}
-                        Cryptography
-                        </label>
-                        <label>
-                        <input
-                            type="radio"
-                            name="question_answer_4"
-                            defaultValue={4}
-                            className="quiz-radio"
-                            onClick={()=>setChoice(4)}
-                            disabled = {choice === answer}
-                        />{" "}
-                        All of the above
-                        </label>
+                        
+                        {
+                            choices.map((item,index)=>
+                            <label>
+                                <input
+                                    key = {index}
+                                    type="radio"
+                                    
+                                    className="quiz-radio"
+                                    onClick={()=>setChoice(index)}
+                                    checked = {choice === index}
+                                    disabled = {choice === answer || solved}
+                                />
+                                {" "+item}
+                            </label>)
+                        }
                     </div>
                     {
                         choice!==-1 && choice !== answer?
@@ -370,7 +385,7 @@ function CourseFour(props){
                 </div>
                 </div>
             </div>
-      <EarnModal open = {open} setOpen = {setOpen}></EarnModal>
+      <EarnModal open = {open && !solved} setOpen = {setOpen}></EarnModal>
 
             </div>
 
