@@ -77,7 +77,7 @@ function Profile() {
         <a href="/home"> Stax | Trading Platform </a>
         <div className="nav-item">
           <a href="/learnAndEarn">Learn&Earn</a>
-          <a href="/Profile">Profile</a>
+          <a href="/Profile">Account</a>
           <a href="/" onClick={handleLogout}>
             Logout
           </a>
@@ -111,7 +111,7 @@ function Profile() {
               maxWidth: '100%',
             }}
           >
-            <TextField fullWidth label="Name" type="number" defaultValue={0} value={user.reward}  disabled/>
+            <TextField fullWidth label="Rewards" type="number" defaultValue={0} value={user.reward}  disabled/>
           </Box>
           <br></br>
           <Box

@@ -30,7 +30,7 @@ function LearnAndEarn() {
         <div className="nav-item">
           <a href="/learnAndEarn">Learning & Rewards</a>
           <a href="/tipsAndTutorials">Tips & Tutorials</a>
-          <a href="/Profile">Profile</a>
+          <a href="/Profile">Account</a>
           <a href="/" onClick={handleLogout}>
             Logout
           </a>

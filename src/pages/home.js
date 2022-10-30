@@ -42,7 +42,7 @@ function Home() {
         <a href="/home"> Stax | Trading Platform </a>
         <div className="nav-item">
           <a href="/learnAndEarn">Learn&Earn</a>
-          <a href="/Profile">Profile</a>
+          <a href="/Profile">Account</a>
           <a href="/" onClick={handleLogout}>
             Logout
           </a>
