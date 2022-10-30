@@ -1,14 +1,32 @@
-import React, { Component } from "react";
+import React,{useContext, useEffect, useState} from "react";
 import { getAuth, signOut ,updatePassword} from "firebase/auth";
 import { Box } from "@mui/system";
 import { TextField,Button,IconButton,InputAdornment,OutlinedInput,FormControl,InputLabel } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useHistory } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore"; 
+import {db} from '../firebase'
+import { AuthContext } from "../context/AuthContext";
 
 function Profile() {
   
   const auth = getAuth();
+  const currentUser = useContext(AuthContext)
+  const [user,setUser] = useState("");
+  useEffect(()=>{
+    const docRef = doc(db, "users", currentUser.currentUser.uid);
+    getDoc(docRef).then((snapshot)=>{
+      console.log(snapshot.data());
+      if (snapshot.exists()) {
+        setUser(snapshot.data());
+      } else {
+        console.log("No such document!");
+      }
+    });
+  },[])
+  
+
   let navigate = useHistory();
   const handleLogout = (e) => {
     signOut(auth)
@@ -75,7 +93,25 @@ function Profile() {
               maxWidth: '100%',
             }}
           >
-            <TextField fullWidth label="E-mail" type="email" defaultValue={JSON.parse(localStorage.getItem("user"))['email']} disabled />
+            <TextField fullWidth label="E-mail" type="email" defaultValue={currentUser.currentUser.email}  disabled/>
+          </Box>
+          <br></br>
+          <Box
+            sx={{
+              width: 500,
+              maxWidth: '100%',
+            }}
+          >
+            <TextField fullWidth label="Name" type="text" defaultValue={" "} value={user.name}  disabled/>
+          </Box>
+          <br></br>
+          <Box
+            sx={{
+              width: 500,
+              maxWidth: '100%',
+            }}
+          >
+            <TextField fullWidth label="Name" type="number" defaultValue={0} value={user.reward}  disabled/>
           </Box>
           <br></br>
           <Box
